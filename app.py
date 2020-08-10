@@ -8,7 +8,19 @@ def create_app(test_config=None):
   app = Flask(__name__)
   CORS(app)
 
-  return app
+
+    @app.route('/movies', methods=['GET'])
+    def retrieve_movies():
+
+    @app.route('/movies', methods=['POST'])
+    def add_movies():
+
+    @app.route('/movies/<int:movie_id>', methods=['DELETE'])
+    def delete_movie(payload, movie_id):
+
+    @app.route('/movie/<int:movie_id>', methods=['PATCH'])
+    def update_movie(payload, movie_id):
+
 
 APP = create_app()
 
