@@ -1,6 +1,6 @@
 import os
 import json
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 from flask_sqlalchemy import SQLAlchemy
 
 database_filename = "database.db"
@@ -10,7 +10,7 @@ database_path = "sqlite:///{}".format(os.path.join(project_dir, database_filenam
 db = SQLAlchemy()
 
 
-def setup_db(app):
+def setup_db(app, database_path=database_path):
     """
     setup_db(app)
         binds a flask application and a SQLAlchemy service
@@ -19,6 +19,7 @@ def setup_db(app):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
+    db.create_all()
 
 
 def db_drop_and_create_all():
@@ -41,23 +42,20 @@ class Movie(db.Model):
     # Auto-incrementing, unique primary key
     id = Column(Integer, primary_key=True)
     # String Title
-    title = Column(String(80), unique=False)
-    release = Column(db.Date)
+    title = Column(String(80), nullable=False)
+    release_date = Column(db.Date, nullable=False)
+
+    def __init__(self, title, release_date):
+        self.title = title
+        self.release_date = release_date
 
     def insert(self):
+        """
+        insert()
+            inserts a new model into a database
+            the model requires a unique id, releaseDate, and title
+        """
         db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        """
-        delete()
-            deletes a new model into a database
-            the model must exist in the database
-            EXAMPLE
-                drink = Drink(title=req_title, recipe=req_recipe)
-                drink.delete()
-        """
-        db.session.delete(self)
         db.session.commit()
 
     def update(self):
@@ -65,15 +63,28 @@ class Movie(db.Model):
         update()
             updates a new model into a database
             the model must exist in the database
-            EXAMPLE
-                drink = Drink.query.filter(Drink.id == id).one_or_none()
-                drink.title = 'Black Coffee'
-                drink.update()
         """
         db.session.commit()
 
-    def __repr__(self):
-        return json.dumps(self.short())
+    def delete(self):
+        """
+        delete()
+            deletes a new model into a database
+            the model must exist in the database
+        """
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        """
+        format()
+            output format that contains id, title, and release date
+        """
+        return {
+            'id': self.id,
+            'title': self.title,
+            'release date': self.release_date
+        }
 
 
 class Actor(db.Model):
@@ -82,12 +93,16 @@ class Actor(db.Model):
     a persistent actors entity, extends the base SQLAlchemy Model
     """
     __tablename__ = 'actors'
-    # Auto-incrementing, unique primary key
-    id = Column(Integer().with_variant(Integer, "sqlite"), primary_key=True)
-    # String Title
-    name = Column(String(80), unique=False)
-    gender = Column(String)
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80), nullable=False)
+    gender = Column(String(8))
     age = Column(Integer)
+
+    def __init__(self, name, gender, age):
+        self.name = name
+        self.gender = gender
+        self.age = age
 
     def insert(self):
         """
@@ -95,23 +110,8 @@ class Actor(db.Model):
             inserts a new model into a database
             the model must have a unique name
             the model must have a unique id or null id
-            EXAMPLE
-                drink = Drink(title=req_title, recipe=req_recipe)
-                drink.insert()
         """
         db.session.add(self)
-        db.session.commit()
-
-    def delete(self):
-        """
-        delete()
-            deletes a new model into a database
-            the model must exist in the database
-            EXAMPLE
-                drink = Drink(title=req_title, recipe=req_recipe)
-                drink.delete()
-        """
-        db.session.delete(self)
         db.session.commit()
 
     def update(self):
@@ -119,12 +119,23 @@ class Actor(db.Model):
         update()
             updates a new model into a database
             the model must exist in the database
-            EXAMPLE
-                drink = Drink.query.filter(Drink.id == id).one_or_none()
-                drink.title = 'Black Coffee'
-                drink.update()
         """
         db.session.commit()
 
-    def __repr__(self):
-        return json.dumps(self.short())
+    def delete(self):
+        """
+        delete()
+            deletes a new model into a database
+            the model must exist in the database
+        """
+        db.session.delete(self)
+        db.session.commit()
+
+    def format(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'gender': self.gender,
+            'age': self.age
+        }
+
