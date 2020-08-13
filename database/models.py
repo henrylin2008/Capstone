@@ -1,6 +1,7 @@
 import os
 import json
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 
 db_name = "casting"
@@ -46,11 +47,14 @@ class Movie(db.Model):
     __tablename__ = 'movies'
     id = Column(Integer, primary_key=True)
     title = Column(String(80), nullable=False)
-    release_date = Column(db.Date, nullable=False)
+    release_date = Column(DateTime(timezone=False))
+    actor_id = Column(Integer, ForeignKey('actors.id'))
+    actors = relationship('Actor', backref='movies')
 
-    def __init__(self, title, release_date):
+    def __init__(self, title, release_date, actor_id):
         self.title = title
         self.release_date = release_date
+        self.actor_id = actor_id
 
     def insert(self):
         """
@@ -86,7 +90,8 @@ class Movie(db.Model):
         return {
             'id': self.id,
             'title': self.title,
-            'release date': self.release_date
+            'release date': self.release_date,
+            'actor_id': self.actor_id
         }
 
 
@@ -96,7 +101,6 @@ class Actor(db.Model):
     a persistent actors entity, extends the base SQLAlchemy Model
     """
     __tablename__ = 'actors'
-
     id = Column(Integer, primary_key=True)
     name = Column(String(80), nullable=False)
     gender = Column(String(8))
@@ -141,4 +145,3 @@ class Actor(db.Model):
             'gender': self.gender,
             'age': self.age
         }
-
