@@ -3,19 +3,25 @@ import json
 from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
 from flask_sqlalchemy import SQLAlchemy
 
-database_filename = "database.db"
-project_dir = os.path.dirname(os.path.abspath(__file__))
-database_path = "sqlite:///{}".format(os.path.join(project_dir, database_filename))
+db_name = "casting"
+db_user = 'postgres'
+db_host = 'localhost'
+db_port = '5432'
+database_path = "postgres://{}@{}:{}/{}".format(
+    db_user,
+    db_host,
+    db_port,
+    db_name)
 
 db = SQLAlchemy()
 
 
-def setup_db(app, database_path=database_path):
+def setup_db(app, db_path=database_path):
     """
     setup_db(app)
         binds a flask application and a SQLAlchemy service
     """
-    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
@@ -27,7 +33,6 @@ def db_drop_and_create_all():
     db_drop_and_create_all()
         drops the database tables and starts fresh
         can be used to initialize a clean database
-        !!NOTE you can change the database_filename variable to have multiple verisons of a database
     """
     db.drop_all()
     db.create_all()
@@ -39,9 +44,7 @@ class Movie(db.Model):
     a persistent movie entity, extends the base SQLAlchemy Model
     """
     __tablename__ = 'movies'
-    # Auto-incrementing, unique primary key
     id = Column(Integer, primary_key=True)
-    # String Title
     title = Column(String(80), nullable=False)
     release_date = Column(db.Date, nullable=False)
 
