@@ -1,6 +1,6 @@
 import os
 import json
-from sqlalchemy import Column, String, Integer, DateTime, ForeignKey
+from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 
@@ -47,7 +47,7 @@ class Movie(db.Model):
     __tablename__ = 'movies'
     id = Column(Integer, primary_key=True)
     title = Column(String(80), nullable=False)
-    release_date = Column(DateTime(timezone=False))
+    release_date = Column(db.Date)
     actor_id = Column(Integer, ForeignKey('actors.id'))
     actors = relationship('Actor', backref='movies')
 
