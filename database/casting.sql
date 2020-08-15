@@ -106,26 +106,26 @@ ALTER TABLE ONLY public.actors ALTER COLUMN id SET DEFAULT nextval('public.actor
 --
 
 COPY public.actors (id, name, age, gender) FROM stdin;
-1   Denzel Washington   65    male
-2   Tom Cruise  58  male
-3   Leonardo DiCaprio   45  male
-4   Samule Jackson  71  male
-5   Morgan Freeman  83  male
-6   Will Smith  51  male
-7   Matt Damon  49  male
-8   Brad Pitt   56  male
-9   Dwayne Johnson  48  male
-10  George Clooney  59  male
-11  Bruce Willis    65  male
-12  Mark Wahlberg   49  male
-13  Ryan Reynolds   43  male
-14  Liam Neeson 68  male
-15  Robert Downey Jr.   55  male
-16  Adam Sandler    53  male
-17  Vin Diesel  53  male
-18  Jason Statham   53  male
-19  Jackie Chan 66  male
-20  Donnie Yen  57  male
+1	Denzel Washington	65	male
+2	Tom Cruise	58	male
+3	Leonardo DiCaprio	45	male
+4	Samule Jackson	71	male
+5	Morgan Freeman	83	male
+6	Will Smith	51	male
+7	Matt Damon	49	male
+8	Brad Pitt	56	male
+9	Dwayne Johnson	48	male
+10	George Clooney	59	male
+11	Bruce Willis	65	male
+12	Mark Wahlberg	49	male
+13	Ryan Reynolds	43	male
+14	Liam Neeson	68	male
+15	Robert Downey Jr.	55	male
+16	Adam Sandler	53	male
+17	Vin Diesel	53	male
+18	Jason Statham	53	male
+19	Jackie Chan	66	male
+20	Donnie Yen	57	male
 \.
 
 
@@ -133,22 +133,22 @@ COPY public.actors (id, name, age, gender) FROM stdin;
 -- Data for Name: movies; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.movies (id, title, release_date) FROM stdin;
-1   The Dark Knight 2008-07-14
-2   Furious 7   2015-04-03
-3   Hobbs & Shaw    2019-07-13
-4   Slumdog Millionaire 2008-11-12
-5   Inception   2010-07-13
-6   Gladiator   2000-05-05
-7   Saving Private Ryan 1998-07-24
-8   Titanic 1997-12-19
-9   The Matrix  1999-03-31
-10  Rush Hour   1998-09-18
-11  Forrest Gump    1994-07-06
-12  Alien   1986-07-18
-13  Ocean's Eleven  2001-12-07
-14  Toy Story 4     2019-06-21
-15  300 2007-03-09
+COPY public.movies (id, title, release_date, actor_id) FROM stdin;
+1	The Dark Kngiht	2008-07-14 01:01:00	11
+2	Furious 7	2015-04-03 01:01:00	17
+3	Hobbs & Shaw	2019-07-13 01:00:00	9
+4	Slumdog Millionaire	2008-11-12 01:00:00	13
+5	Inception	2010-07-13 00:01:00	3
+6	Gladiator	2000-05-05 00:01:00	7
+7	Saving Private Ryan	1998-07-24 00:00:10	4
+8	Titanic	1997-12-19 00:00:01	8
+9	The Matrix	1999-03-31 00:01:00	2
+10	Rush Hour	1998-09-18 00:01:00	19
+11	Ip Man	2010-07-14 00:00:01	20
+12	Ocean Eleven	2001-12-07 01:00:00	1
+13	The Pursuit of Happyness	2006-12-15 01:00:00	6
+14	Forrest Gump	1994-07-06 00:01:00	12
+15	300	2007-03-09 00:01:00	14
 \.
 
 
@@ -186,8 +186,8 @@ ALTER TABLE ONLY public.movies
 -- Name: movie movie_actor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.movie
-    ADD CONSTRAINT movie_actor_id_fkey FOREIGN KEY (actor_id) REFERENCES public.actor(id);
+ALTER TABLE ONLY public.movies
+    ADD CONSTRAINT movies_actor_id_fkey FOREIGN KEY (actor_id) REFERENCES public.actors(id);
 
 --
 -- PostgreSQL database dump complete
