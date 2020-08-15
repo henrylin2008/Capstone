@@ -51,7 +51,8 @@ class Movie(db.Model):
     actor_id = Column(Integer, ForeignKey('actors.id'))
     actors = relationship('Actor', backref='movies')
 
-    def __init__(self, title, release_date, actor_id):
+    def __init__(self, id, title, release_date, actor_id):
+        self.id = id
         self.title = title
         self.release_date = release_date
         self.actor_id = actor_id
@@ -88,10 +89,10 @@ class Movie(db.Model):
             output format that contains id, title, and release date
         """
         return {
-            'id': self.id,
-            'title': self.title,
-            'release date': self.release_date,
-            'actor_id': self.actor_id
+            'Title': self.title,
+            'Release Date': self.release_date,
+            'Movie ID': self.id,
+            'Actor ID': self.actor_id,
         }
 
 
@@ -140,8 +141,8 @@ class Actor(db.Model):
 
     def format(self):
         return {
-            'id': self.id,
-            'name': self.name,
-            'gender': self.gender,
-            'age': self.age
+            'Actor ID': self.id,
+            'Name': self.name,
+            'Gender': self.gender,
+            'Age': self.age
         }
