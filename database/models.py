@@ -51,8 +51,7 @@ class Movie(db.Model):
     actor_id = Column(Integer, ForeignKey('actors.id'))
     actors = relationship('Actor', backref='movies')
 
-    def __init__(self, id, title, release_date, actor_id):
-        self.id = id
+    def __init__(self, title, release_date, actor_id):
         self.title = title
         self.release_date = release_date
         self.actor_id = actor_id
