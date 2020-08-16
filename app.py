@@ -69,7 +69,7 @@ def create_app(test_config=None):
 
     @app.route('/movie', methods=['POST'])
     # @requires_auth('post:movie')
-    def add_movies():
+    def add_movie():
         body = request.get_json()
         title = body.get('title', None)
         release_date = body.get('release_date', None)
@@ -153,7 +153,6 @@ def create_app(test_config=None):
             'message': "Movie has been deleted"
         }), 200
 
-
     # -- Actors endpoints -- #
     @app.route('/actors', methods=['GET'])
     # @requires_auth('get:actors')
@@ -169,11 +168,15 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/actor/<int:actor_id>', methods=['GET'])
-    @requires_auth('get:actor')
-    def retrieve_an_actor(payload, actor_id):
+    # @requires_auth('get:actor')
+    def retrieve_an_actor(actor_id):
         actor_query = Actor.query.filter(Actor.id == actor_id).one_or_none()
         if not actor_query:
-            abort(404)
+            return jsonify({
+                'success': False,
+                'error': 400,
+                'message': 'Invalid actor id'
+            }), 400
 
         return jsonify({
             'success': True,
@@ -181,33 +184,38 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/actor', methods=['POST'])
-    @requires_auth('post:actor')
-    def add_actor(payload):
+    # @requires_auth('post:actor')
+    def add_actor():
         body = request.get_json()
-        name = body.get('name')
-        age = body.get('age')
-        gender = body.get('gender')
+        name = body.get('name', None)
+        age = body.get('age', None)
+        gender = body.get('gender', None)
 
         if not name or not age or not gender:
-            abort(422)
+            return jsonify({
+                'success': False,
+                'error': 400,
+                'message': 'name, age, and gender are required!'
+            }), 400
 
         try:
             actor = Actor(name=name, age=age, gender=gender)
             actor.insert()
-            new_actor = Actor.query.get(actor.id)
-            new_actor = new_actor.format()
         except:
             abort(422)
+
+        actor = Actor.query.get(actor.id)
+        actor_format = actor.format()
 
         return jsonify({
             'success': True,
             'movie': actor.id,
-            'new actor': new_actor
+            'new actor': actor_format
         }), 200
 
     @app.route('/actor/<int:actor_id>', methods=['PATCH'])
-    @requires_auth('patch:actor')
-    def update_actor(payload, actor_id):
+    # @requires_auth('patch:actor')
+    def update_actor(actor_id):
         body = request.get_json()
         name = body.get('name', None)
         age = body.get('age', None)
@@ -215,8 +223,11 @@ def create_app(test_config=None):
 
         actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
         if not actor:
-            abort(404)
-
+            return jsonify({
+                'success': False,
+                'error': 400,
+                'message': 'Please provide an actor ID'
+            }), 400
         try:
             if name:
                 actor.name = name
@@ -235,22 +246,26 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/actor/<int:actor_id>', methods=['DELETE'])
-    @requires_auth('delete:actor')
-    def delete_actor(payload, actor_id):
+    # @requires_auth('delete:actor')
+    def delete_actor(actor_id):
         actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
         if not actor:
-            abort(404)
+            return jsonify({
+                'success': False,
+                'error': 400,
+                'message': 'Invalid actor id'
+            }), 400
 
         try:
             actor.delete()
         except:
             abort(422)
 
-            return jsonify({
-                'success': True,
-                'delete': actor_id,
-                'message': "Actor has been deleted"
-            }), 200
+        return jsonify({
+            'success': True,
+            'delete': actor_id,
+            'message': "Actor has been deleted"
+        }), 200
 
     # ---------------------------------------------------------------------#
     # Error Handlers
@@ -315,6 +330,7 @@ def create_app(test_config=None):
         return response
 
     return app
+
 
 app = create_app()
 
