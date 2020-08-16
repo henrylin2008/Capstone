@@ -1,7 +1,7 @@
 import os
 import json
 from sqlalchemy import Column, String, Integer, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 from flask_sqlalchemy import SQLAlchemy
 
 db_name = "casting"
@@ -49,7 +49,7 @@ class Movie(db.Model):
     title = Column(String(80), nullable=False)
     release_date = Column(db.Date)
     actor_id = Column(Integer, ForeignKey('actors.id'))
-    actors = relationship('Actor', backref='movies')
+    actors = relationship('Actor', backref=backref('movies', lazy=True))
 
     def __init__(self, title, release_date, actor_id):
         self.title = title
