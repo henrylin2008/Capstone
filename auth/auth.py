@@ -6,7 +6,7 @@ from urllib.request import urlopen
 
 AUTH0_DOMAIN = 'dev-wmig32c8.us.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = ''
+API_AUDIENCE = 'casting_agency'
 
 
 # ---------------------------------------------------------------------#
@@ -79,7 +79,7 @@ def check_permissions(permission, payload):
     """Validate logged in user's permission
 
     Parameters:
-        -permission (str): string represents the permission (i.e.: 'get:drinks-detail', 'post:drinks')
+        -permission (str): string represents the permission (i.e.: 'get:movies', 'post:movie')
         -payload (dict): decoded jwt payload
 
     Returns:
