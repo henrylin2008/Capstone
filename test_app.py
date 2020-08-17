@@ -65,16 +65,17 @@ class CastingAgencyTestCase(unittest.TestCase):
 
     def test_add_movie(self):
         """Test case to add a new movie"""
-        response = self.client().post('/movie', json={
-            "title": "new movie",
-            "release_date": "Mon, 14 Jul 2008 01:01:00 GMT",
-            "actor_id": 3
-        })
+        response = self.client().post('/movie',
+                                      json={
+                                          "title": "new movie",
+                                          "release_date": "Mon, 14 Jul 2008 01:01:00 GMT",
+                                          "actor_id": 3
+                                      })
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['created'])
+        self.assertTrue(data['movie'])
 
     def test_400_sent_invalid_data_add_movie(self):
         response = self.client().post('/movie', json={
@@ -99,16 +100,16 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['movie'])
+        self.assertTrue(data['movie'])
 
     def test_delete_movie(self):
         """Test case to delete a movie"""
-        response = self.client().delete('/movie/10')
+        response = self.client().delete('/movie/16')
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], 10)
+        self.assertEqual(data['deleted'], 16)
 
     def test_400_sent_deleting_non_existing_movie(self):
         """Test case for deleting a non-existing movie"""
@@ -162,9 +163,10 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['movie'])
+        self.assertTrue(data['movie'])
 
     def test_400_sent_invalid_data_add_actor(self):
+        """Test case of adding a new actor with invalid data"""
         response = self.client().post('/actor', json={
             "name": "Bruce Lee",
             "gender": "male",
@@ -187,16 +189,16 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['actor'])
+        self.assertTrue(data['actor'])
 
-    def test_delete_movie(self):
-        """Test case to delete a movie"""
-        response = self.client().delete('/actor/20')
+    def test_delete_actor(self):
+        """Test case to delete an actor"""
+        response = self.client().delete('/actor/17')
         data = json.loads(response.data)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], 20)
+        self.assertEqual(data['deleted'], 17)
         self.assertEqual(data['message'], 'Actor has been deleted')
 
     def test_400_sent_deleting_non_existing_actor(self):
@@ -208,6 +210,7 @@ class CastingAgencyTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['error'], 400)
         self.assertEqual(data['message'], 'Invalid actor id')
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
