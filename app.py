@@ -149,7 +149,7 @@ def create_app(test_config=None):
 
         return jsonify({
             'success': True,
-            'delete': movie_id,
+            'deleted': movie_id,
             'message': "Movie has been deleted"
         }), 200
 
@@ -263,7 +263,7 @@ def create_app(test_config=None):
 
         return jsonify({
             'success': True,
-            'delete': actor_id,
+            'deleted': actor_id,
             'message': "Actor has been deleted"
         }), 200
 

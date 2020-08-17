@@ -265,7 +265,7 @@ curl -X DELETE http://127.0.0.1:5000/movie/16
 ##### Output:
 ```
 {
-  "delete": 16,
+  "deleted": 16,
   "message": "Movie has been deleted",
   "success": true
 }
@@ -478,7 +478,22 @@ curl http://127.0.0.1:5000/actor -X POST
   "success": true
 }
 ```
+#### DELETE /actor/{actor_id}
+- Deleting an actor with provided actor_id from the database 
+- Returns the id of the deleted actor, message, success value (true/false)
 
+##### Input:
+```
+curl -X DELETE http://127.0.0.1:5000/actor/16
+```
+##### Output:
+```
+{
+  "deleted": 16,
+  "message": "Actor has been deleted",
+  "success": true
+}
+```
 
 ### Error Handling
 ```
