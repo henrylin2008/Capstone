@@ -39,8 +39,8 @@ def create_app(test_config=None):
 
     # -- movies endpoints -- #
     @app.route('/movies', methods=['GET'])
-    # @requires_auth('get:movies')
-    def retrieve_movies():
+    @requires_auth('get:movies')
+    def retrieve_movies(token):
         movie_query = Movie.query.all()
         if len(movie_query) == 0:
             abort(404)
@@ -52,8 +52,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/movie/<int:movie_id>', methods=['GET'])
-    # @requires_auth('get:movie')
-    def retrieve_movie_detail(movie_id):
+    @requires_auth('get:movie')
+    def retrieve_movie_detail(token, movie_id):
         movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
         if not movie:
             return jsonify({
@@ -68,8 +68,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/movie', methods=['POST'])
-    # @requires_auth('post:movie')
-    def add_movie():
+    @requires_auth('post:movie')
+    def add_movie(token):
         body = request.get_json()
         title = body.get('title', None)
         release_date = body.get('release_date', None)
@@ -98,8 +98,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/movie/<int:movie_id>', methods=['PATCH'])
-    # @requires_auth('patch:movie')
-    def update_movie(movie_id):
+    @requires_auth('patch:movie')
+    def update_movie(token, movie_id):
         body = request.get_json()
         title = body.get('title', None)
         release_date = body.get('release_date', None)
@@ -132,8 +132,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/movie/<int:movie_id>', methods=['DELETE'])
-    # @requires_auth('delete:movie')
-    def delete_movie(movie_id):
+    @requires_auth('delete:movie')
+    def delete_movie(token, movie_id):
         movie = Movie.query.filter(Movie.id == movie_id).one_or_none()
         if not movie:
             return jsonify({
@@ -155,8 +155,8 @@ def create_app(test_config=None):
 
     # -- Actors endpoints -- #
     @app.route('/actors', methods=['GET'])
-    # @requires_auth('get:actors')
-    def retrieve_actors():
+    @requires_auth('get:actors')
+    def retrieve_actors(token):
         actor_query = Actor.query.all()
         if len(actor_query) == 0:
             abort(404)
@@ -168,8 +168,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/actor/<int:actor_id>', methods=['GET'])
-    # @requires_auth('get:actor')
-    def retrieve_an_actor(actor_id):
+    @requires_auth('get:actor')
+    def retrieve_an_actor(token, actor_id):
         actor_query = Actor.query.filter(Actor.id == actor_id).one_or_none()
         if not actor_query:
             return jsonify({
@@ -184,8 +184,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/actor', methods=['POST'])
-    # @requires_auth('post:actor')
-    def add_actor():
+    @requires_auth('post:actor')
+    def add_actor(token):
         body = request.get_json()
         name = body.get('name', None)
         age = body.get('age', None)
@@ -214,8 +214,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/actor/<int:actor_id>', methods=['PATCH'])
-    # @requires_auth('patch:actor')
-    def update_actor(actor_id):
+    @requires_auth('patch:actor')
+    def update_actor(token, actor_id):
         body = request.get_json()
         name = body.get('name', None)
         age = body.get('age', None)
@@ -246,8 +246,8 @@ def create_app(test_config=None):
         }), 200
 
     @app.route('/actor/<int:actor_id>', methods=['DELETE'])
-    # @requires_auth('delete:actor')
-    def delete_actor(actor_id):
+    @requires_auth('delete:actor')
+    def delete_actor(token, actor_id):
         actor = Actor.query.filter(Actor.id == actor_id).one_or_none()
         if not actor:
             return jsonify({
