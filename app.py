@@ -3,8 +3,8 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
-from .database.models import setup_db, Actor, Movie
-from .auth.auth import AuthError, requires_auth
+from database.models import setup_db, Actor, Movie
+from auth.auth import AuthError, requires_auth
 import json
 
 
