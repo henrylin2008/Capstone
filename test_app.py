@@ -128,7 +128,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
     def test_delete_movie(self):
         """Test case to delete a movie"""
-        response = self.client().delete('/movie/16',
+        response = self.client().delete('/movie/5',
                                         headers={"Authorization": "Bearer {}".format(self.executive_producer)
                                                  }
                                         )
@@ -136,12 +136,12 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], 16)
+        self.assertEqual(data['deleted'], 5)
 
     def test_400_sent_deleting_non_existing_movie(self):
         """Test case for deleting a non-existing movie"""
         response = self.client().delete('/movie/1000',
-                                        headers={"Authorization": "Bearer {}".format(self.casting_director)
+                                        headers={"Authorization": "Bearer {}".format(self.executive_producer)
                                                  }
                                         )
         data = json.loads(response.data)
@@ -227,7 +227,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
     def test_update_actor(self):
         """Test case to update a movie"""
-        response = self.client().patch('/actor/10',
+        response = self.client().patch('/actor/5',
                                        json={
                                            "name": "JJ",
                                            "age": 24,
@@ -244,7 +244,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
     def test_delete_actor(self):
         """Test case to delete an actor"""
-        response = self.client().delete('/actor/17',
+        response = self.client().delete('/actor/5',
                                         headers={"Authorization": "Bearer {}".format(self.executive_producer)
                                                  }
                                         )
@@ -252,7 +252,7 @@ class CastingAgencyTestCase(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], 17)
+        self.assertEqual(data['deleted'], 5)
         self.assertEqual(data['message'], 'Actor has been deleted')
 
     def test_400_sent_deleting_non_existing_actor(self):
