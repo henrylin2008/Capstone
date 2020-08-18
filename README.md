@@ -14,6 +14,12 @@ The Casting Agency models a company that is responsible for creating movies and 
         * All permissions a Casting Director has and…
         * Add or delete a movie from the database
 
+
+|   Roles   |   Permissions |
+| :---  |   :--- |
+| Casting Assistant | `get:movies` `get:actors` |
+| Casting Director  | `get:movies` `get:movie` `patch:movie`  `post:movie` `get:actors` `get:actor` `patch:actor` `post:actor` |
+| Executive Producer  | `get:movies` `get:movie` `patch:movie`  `post:movie` `get:actors` `get:actor` `patch:actor` `post:actor` `del:movie`  `del:actor` |
 ## Getting Started
 
 ### Dependencies
@@ -42,8 +48,11 @@ pip install -r requirements.txt
 - [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS. 
 
 ## Database Setup
-With Postgres running, restore a database using the casting.psql file from the `database` directory in terminal run:
+With Postgres running, restore a database using the `casting.sql` file from the `database` directory in terminal run:
 ```bash
+createdb casting_test; 
+GRANT ALL ON DATABASE casting_test to postgres;
+
 psql casting_test < casting.sql
 ```
 
@@ -54,29 +63,39 @@ From within the `home` directory first ensure you are working using your created
 To run the server, execute:
 
 ```bash
-export FLASK_APP=flaskr
+export FLASK_APP=app.py
 export FLASK_ENV=development
 flask run
 ```
 
 Setting the `FLASK_ENV` variable to `development` will detect file changes and restart the server automatically.
 
-Setting the `FLASK_APP` variable to `flaskr` directs flask to use the `flaskr` directory and the `__init__.py` file to find the application. 
+Setting the `FLASK_APP` variable to `app.py` directs flask to use the `app.py` file and the `__init__.py` file to find the application. 
+
+## URL
+
+* Heroku: https://hlin-capstone.herokuapp.com/
+* Running locally: http://localhost:5000
+
+## Testing
+To run the tests, navigate to `database` and locate `casting.sql` file
+```
+dropdb casting_test;
+createdb casting_test;
+
+psql casting_test < casting.sql
+```
+
+## [Postman](https://getpostman.com) Collections:
+- Import the postman collection, navigate to `Postman_tests` directory and select any collections of Postman endpoints tests:
+    * `Heroku_endpoints_tests.json`: Heroku endpoints tests with (proper permission) bearer token included
+    * `local_endpoints_tests.json`: Local endpoints tests with (proper permission) bearer token included
 
 ## API Reference
 Getting Started
-- Backend Base URL: http://127.0.0.1:5000/
+- Base URL: http://127.0.0.1:5000/
 
-## Testing
-To run the tests, run
-```
-dropdb casting_test
-createdb casting_test
-psql casting_test < casting.psql
-python test_app.py
-```
-
-### Endpoints 
+### Endpoints: 
 
 #### GET /movies
 - Fetches all movies from the database
