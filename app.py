@@ -3,9 +3,8 @@ from flask import Flask, request, abort, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
-from database.models import setup_db, Actor, Movie
-from auth.auth import AuthError, requires_auth
-import json
+from .database.models import setup_db, Actor, Movie
+from .auth.auth import AuthError, requires_auth
 
 
 # ---------------------------------------------------------------------#
@@ -322,8 +321,8 @@ def create_app(test_config=None):
     @app.errorhandler(AuthError)
     def handle_auth_error(error):
         """
-    Receive the raised authorization error and propagates it as response
-    """
+        Receive the raised authorization error and propagates it as response
+        """
         response = jsonify(error.error)
         response.status_code = error.status_code
 
