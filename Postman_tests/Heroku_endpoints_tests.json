@@ -71,7 +71,7 @@
 					"response": []
 				},
 				{
-					"name": "movie/20",
+					"name": "movie/10",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -95,7 +95,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://hlin-capstone.herokuapp.com/movie/20",
+							"raw": "https://hlin-capstone.herokuapp.com/movie/10",
 							"protocol": "https",
 							"host": [
 								"hlin-capstone",
@@ -104,7 +104,7 @@
 							],
 							"path": [
 								"movie",
-								"20"
+								"10"
 							],
 							"query": [
 								{
@@ -175,7 +175,7 @@
 					"response": []
 				},
 				{
-					"name": "movie/20",
+					"name": "movie/10",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -190,7 +190,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://hlin-capstone.herokuapp.com/movie/20",
+							"raw": "https://hlin-capstone.herokuapp.com/movie/10",
 							"protocol": "https",
 							"host": [
 								"hlin-capstone",
@@ -199,7 +199,7 @@
 							],
 							"path": [
 								"movie",
-								"20"
+								"10"
 							],
 							"query": [
 								{
@@ -285,7 +285,7 @@
 					"response": []
 				},
 				{
-					"name": "actor/20",
+					"name": "actor/10",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -309,7 +309,7 @@
 							}
 						},
 						"url": {
-							"raw": "https://hlin-capstone.herokuapp.com/actor/20",
+							"raw": "https://hlin-capstone.herokuapp.com/actor/10",
 							"protocol": "https",
 							"host": [
 								"hlin-capstone",
@@ -318,7 +318,7 @@
 							],
 							"path": [
 								"actor",
-								"20"
+								"10"
 							],
 							"query": [
 								{
@@ -388,7 +388,7 @@
 					"response": []
 				},
 				{
-					"name": "/actor/20",
+					"name": "/actor/10",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -403,7 +403,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "https://hlin-capstone.herokuapp.com/actor/20",
+							"raw": "https://hlin-capstone.herokuapp.com/actor/10",
 							"protocol": "https",
 							"host": [
 								"hlin-capstone",
@@ -412,7 +412,7 @@
 							],
 							"path": [
 								"actor",
-								"20"
+								"10"
 							],
 							"query": [
 								{
