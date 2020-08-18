@@ -4,16 +4,16 @@ from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from flask_sqlalchemy import SQLAlchemy
 
-db_name = "casting"
-db_user = 'postgres'
-db_host = 'localhost'
-db_port = '5432'
-database_path = "postgres://{}@{}:{}/{}".format(
-    db_user,
-    db_host,
-    db_port,
-    db_name)
-
+# db_name = "casting"
+# db_user = 'postgres'
+# db_host = 'localhost'
+# db_port = '5432'
+# database_path = "postgres://{}@{}:{}/{}".format(
+#     db_user,
+#     db_host,
+#     db_port,
+#     db_name)
+database_path = 'postgres://kzsscvnozhpwcl:4224bc447debc9d8b501be3bbce9373222d97ce2d2bff64b767b85e4a216d2ff@ec2-184-73-249-9.compute-1.amazonaws.com:5432/d27nosece0i7eb'
 db = SQLAlchemy()
 
 
