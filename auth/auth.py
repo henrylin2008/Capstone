@@ -1,12 +1,14 @@
 import json
+import os
+
 from flask import request, abort, _request_ctx_stack
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
 
-AUTH0_DOMAIN = 'dev-wmig32c8.us.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'casting_agency'
+AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN']
+ALGORITHMS = os.environ['ALGORITHMS']
+API_AUDIENCE = os.environ['API_AUDIENCE']
 
 
 # ---------------------------------------------------------------------#
@@ -40,10 +42,14 @@ def get_token_auth_header():
         -str: represents the token part of the authorization header
 
     Raises:
-        -AuthError: [401, "authorization_header_missing"], "Authorization header is expected"
-        -AuthError: [401, "invalid_header"], "Authorization header must start with "Bearer""
-        -AuthError: [401, "invalid_header"], "token not found"
-        -AuthError: [401, "invalid_header"], "Authorization header must be bearer token"
+        -AuthError: [401, "authorization_header_missing"],
+                    "Authorization header is expected"
+        -AuthError: [401, "invalid_header"],
+                    "Authorization header must start with "Bearer""
+        -AuthError: [401, "invalid_header"],
+                    "token not found"
+        -AuthError: [401, "invalid_header"],
+                    "Authorization header must be bearer token"
     """
     auth = request.headers.get('Authorization', None)
     if not auth:
@@ -79,14 +85,16 @@ def check_permissions(permission, payload):
     """Validate logged in user's permission
 
     Parameters:
-        -permission (str): string represents the permission (i.e.: 'get:movies', 'post:movie')
+        -permission (str): string represents the permission
+                        (i.e.: 'get:movies', 'post:movie')
         -payload (dict): decoded jwt payload
 
     Returns:
         -boolean: True if permissions are included in the payload
 
     Raises:
-        -AuthError: [400, "Invalid_claims"], "Permissions are not included in JWT"
+        -AuthError: [400, "Invalid_claims"],
+                    "Permissions are not included in JWT"
         -AuthError: [401, "Unauthorized"], "Permission not found"
     """
     if 'permissions' not in payload:
@@ -113,11 +121,16 @@ def verify_decode_jwt(token):
         -The decoded payload in dict format
 
     Raises:
-         -AuthError: [401, 'token_expired'], "Authorization malformed."
-         -AuthError: [401, 'token_expired'], "Token expired."
-         -AuthError: [401, 'invalid_claims'], "Incorrect claims. Please check the audience and issuer."
-         -AuthError: [400, 'invalid_header'], "Unable to parse authentication token."
-         -AuthError: [400, 'invalid_header'], "Unable to find the appropriate key."
+         -AuthError: [401, 'token_expired'],
+                     "Authorization malformed."
+         -AuthError: [401, 'token_expired'],
+                     "Token expired."
+         -AuthError: [401, 'invalid_claims'],
+                     "Incorrect claims. Please check the audience and issuer."
+         -AuthError: [400, 'invalid_header'],
+                     "Unable to parse authentication token."
+         -AuthError: [400, 'invalid_header'],
+                     "Unable to find the appropriate key."
     """
     jsonurl = urlopen(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
     jwks = json.loads(jsonurl.read())
@@ -158,7 +171,8 @@ def verify_decode_jwt(token):
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please check the audience and issuer.'
+                'description':
+                'Incorrect claims. Please check the audience and issuer.'
             }, 401)
 
         except Exception:
@@ -175,11 +189,13 @@ def verify_decode_jwt(token):
 
 
 def requires_auth(permission=''):
-    """ Obtains the access token from get_token_auth_header and decodes the token,
-        and it validates claims and check the requested permission
+    """ Obtains the access token from get_token_auth_header
+        and decodes the token, and it validates claims and
+        check the requested permission
 
     Parameter:
-        -permission (str): string that represents the permission (i.e. "post:drink")
+        -permission (str): string that represents the
+                           permission (i.e. "post:drink")
 
     Returns:
         -the decorator which passes the decoded payload to the decorated method
