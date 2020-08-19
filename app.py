@@ -24,10 +24,8 @@ def create_app(test_config=None):
       Return:
           response object with Access-Control-Allow
       """
-        response.headers.add('Access-Control-Allow-Headers',
-                             'Content-Type,Authorization,true')
-        response.headers.add('Access-Control-Allow-Methods',
-                             'GET,PUT,POST,DELETE,OPTIONS')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         return response
 
     # ---------------------------------------------------------------------#
@@ -84,10 +82,9 @@ def create_app(test_config=None):
             }), 400
 
         try:
-            movie = Movie(title=title, release_date=release_date,
-                          actor_id=actor_id)
+            movie = Movie(title=title, release_date=release_date, actor_id=actor_id)
             movie.insert()
-        except Exception:
+        except:
             abort(422)
 
         new_movie = Movie.query.get(movie.id)
@@ -125,7 +122,7 @@ def create_app(test_config=None):
 
             movie.update()
 
-        except Exception:
+        except:
             abort(422)
 
         return jsonify({
@@ -146,7 +143,7 @@ def create_app(test_config=None):
 
         try:
             movie.delete()
-        except Exception:
+        except:
             abort(422)
 
         return jsonify({
@@ -203,7 +200,7 @@ def create_app(test_config=None):
         try:
             actor = Actor(name=name, age=age, gender=gender)
             actor.insert()
-        except Exception:
+        except:
             abort(422)
 
         actor = Actor.query.get(actor.id)
@@ -239,7 +236,7 @@ def create_app(test_config=None):
                 actor.gender = gender
 
             actor.update()
-        except Exception:
+        except:
             abort(422)
 
         return jsonify({
@@ -260,7 +257,7 @@ def create_app(test_config=None):
 
         try:
             actor.delete()
-        except Exception:
+        except:
             abort(422)
 
         return jsonify({
